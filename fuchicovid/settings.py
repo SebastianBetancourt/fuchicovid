@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import django_heroku
+import dj_database_url
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,12 +28,13 @@ SECRET_KEY = '9-qy@5%5+euwxd5zo!vmgs*i9tue$3%#o-zj89!l4l0b2w3!0_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fuchi-covid.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'proyecto.apps.ProyectoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,13 +76,25 @@ WSGI_APPLICATION = 'fuchicovid.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
+
+if 'DATABASE_URL' not in os.environ:
+    import environ
+    env = environ.Env()
+    environ.Env.read_env()
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'URL': os.environ.get('DATABASE_URL')
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
+# else:
+#     print("Usando DB local")
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
