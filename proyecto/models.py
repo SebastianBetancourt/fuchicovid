@@ -1,5 +1,7 @@
 from django.db import models
 
+# Modelo de datos
+
 class Persona(models.Model):
     CC = 'CC'
     TI = 'TI'
@@ -21,6 +23,8 @@ class Persona(models.Model):
     direccion = models.CharField(max_length=255)
     barrio = models.CharField(max_length=100)
     telefono = models.CharField(max_length=32)
+    class Meta:
+        abstract = True
 
 class Funcionario(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
@@ -57,3 +61,25 @@ class Reserva(models.Model):
     medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
     laboratorio = models.CharField(max_length=32)
     cantidad = models.PositiveIntegerField()
+
+
+# Trigger
+from django.db import connection
+print("models being executed")
+connection.cursor().execute("""
+CREATE OR REPLACE FUNCTION reabastecer_medicamento()
+RETURNS trigger AS '
+BEGIN
+  IF NEW.cantidad = 0 THEN
+    NEW.cantidad := 100;
+  END IF;
+  RETURN NEW;
+END' LANGUAGE 'plpgsql'""")
+
+connection.cursor().execute("DROP TRIGGER IF EXISTS medicamento_acabado ON proyecto_reserva")
+
+connection.cursor().execute("""
+CREATE TRIGGER medicamento_acabado 
+BEFORE UPDATE ON proyecto_reserva 
+FOR EACH ROW EXECUTE 
+PROCEDURE reabastecer_medicamento();""")
