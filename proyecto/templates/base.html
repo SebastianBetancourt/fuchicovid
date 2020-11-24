@@ -1,0 +1,32 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+  <title>Inicio - fuchi-covid</title>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+</head>
+<body>
+  <header>
+    <h1>fuchi-COVID</h1>
+    {% if user.is_authenticated %}
+      Sesión abierta de <strong>{{ user.username }}</strong> /
+      <a href="{% url 'home' %}">Inicio</a> /
+      <a href="{% url 'logout' %}">Cerrar sesión</a>
+    {% else %}
+    <a href="{% url 'home' %}">Inicio</a> /
+      <a href="{% url 'login' %}">Iniciar sesión</a>
+
+    {% endif %}
+    <hr>
+  </header>
+  <main>
+   {% block content %}
+    {% endblock %}
+  </main>
+  <footer>
+    <hr>
+    <small>
+      Joan Betancourt, Nicolas Lasso - BD UV 2020
+    </small>
+  </footer>
+</body>
+</html>
