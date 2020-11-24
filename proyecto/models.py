@@ -23,8 +23,7 @@ class Persona(models.Model):
     direccion = models.CharField(max_length=255)
     barrio = models.CharField(max_length=100)
     telefono = models.CharField(max_length=32)
-    class Meta:
-        abstract = True
+
 
 class Funcionario(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
