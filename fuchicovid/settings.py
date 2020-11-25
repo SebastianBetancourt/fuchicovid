@@ -86,9 +86,10 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'fuchicovid.wsgi.application'
 
 # variables de ambiente
-import environ
-env = environ.Env()
-environ.Env.read_env()
+if 'DATABASE_URL' not in os.environ:
+    import environ
+    env = environ.Env()
+    environ.Env.read_env()
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -97,11 +98,12 @@ DATABASES = {
     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
+# Social login
+
 SOCIAL_AUTH_GITHUB_KEY = os.environ.get('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('SOCIAL_AUTH_GITHUB_SECRET')
 
-# else:
-#     print("Usando DB local")
+# usar sqlite local
 #     DATABASES = {
 #         'default': {
 #             'ENGINE': 'django.db.backends.sqlite3',
