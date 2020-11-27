@@ -1,0 +1,72 @@
+[
+  {
+    "model": "proyecto.persona",
+    "pk": 1,
+    "fields": {
+      "nombre": "John",
+      "apellido": "Lennon",
+      "email": "johnlenon@jophnlennon.com",
+      "tipo_doc": "CC",
+      "doc":"12345389",
+      "direccion":"cra 44 23 34",
+      "barrio": "gunami",
+      "telefono": "4535345345"
+    }
+  },
+  {
+    "model": "proyecto.persona",
+    "pk": 2,
+    "fields": {
+      "nombre" : "aaa",
+      "apellido": "aaa",
+      "email": "aaaaa@jophnlennon.com",
+      "tipo_doc": "CC",
+      "doc":"1111111111",
+      "direccion":"cra aaaaa",
+      "barrio": "aaa",
+      "telefono": "1111111111"
+    }
+  },
+  {
+    "model": "proyecto.persona",
+    "pk": 3,
+    "fields": {
+      "nombre": "bbbb",
+      "apellido": "bbbb",
+      "email": "bbbbb@jophnlennon.com",
+      "tipo_doc": "CC",
+      "doc":"222222222222",
+      "direccion":"cra bbbbbbbb",
+      "barrio": "bbbbb",
+      "telefono": "222222222222"
+    }
+  },
+  {
+    "model": "proyecto.persona",
+    "pk": 4,
+    "fields": {
+      "nombre": "ccccc",
+      "apellido": "cccccc",
+      "email": "ccccc@jophnlennon.com",
+      "tipo_doc": "CC",
+      "doc":"33333333333",
+      "direccion":"cra cccccc",
+      "barrio": "ccccccc",
+      "telefono": "333333333333"
+    }
+  },
+    {
+    "model": "proyecto.persona",
+    "pk": 5,
+    "fields": {
+      "nombre": "dddddddd",
+      "apellido": "dddddddddd",
+      "email": "dddddd@jophnlennon.com",
+      "tipo_doc": "CC",
+      "doc":"444444",
+      "direccion":"cra 44444444",
+      "barrio": "ddddddddd",
+      "telefono": "4444444444"
+    }
+  }
+]

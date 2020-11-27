@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>{{ title_singular|title }}:</h4>
+<h2>{{object.apellido|upper}} {{object.nombre|upper}}</h2>
+<a href={%url 'editar' superpersonas object.id%}>Editar</a> - <a href={%url 'borrar' superpersonas object.id%}>Borrar</a>
+<br>
+<table>
+<tr><td>APELLIDOS: </td><td>{{ object.apellido }}</td></tr>
+<tr><td>NOMBRES: </td><td>{{ object.nombre }}</td></tr>
+<tr><td>DOCUMENTO: </td><td>{{ object.tipo_doc }} {{ object.doc }}</td></tr>
+<tr><td>DIRECCION: </td><td>{{ object.direccion }}</td></tr>
+<tr><td>TELEFONO: </td><td>{{ object.telefono }}</td></tr>
+        {% block detalle %}
+        {% endblock %}
+</table>
+{% endblock  %}

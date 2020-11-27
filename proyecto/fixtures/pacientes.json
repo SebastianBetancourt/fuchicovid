@@ -1,0 +1,24 @@
+[{
+    "model": "proyecto.paciente",
+    "pk": 1,
+    "fields": {
+      "persona_ptr_id": "3",
+      "geolocalizacion": "3",
+      "creacion": "2013-01-16T08:16:59.844Z",
+      "ciudad_contagio": "ciudad",
+      "doctor_encargado_id": "2",
+      "parientes": ["1", "2"]
+    }
+  },
+  {
+    "model": "proyecto.paciente",
+    "pk": 2,
+    "fields": {
+      "persona_ptr_id": "4",
+      "geolocalizacion": "rqewrqwerqw",
+      "creacion": "2013-01-16T08:16:59.844Z",
+      "ciudad_contagio": "ciudad2",
+      "doctor_encargado_id": "2",
+      "parientes": ["3", "5"]
+    }
+  }]

@@ -1,0 +1,9 @@
+{% extends 'persona/perfil.html' %}
+
+{% block detalle %}
+<tr><td>DOCTOR ENCARGADO:</td><td><a href="{%url 'perfil' 'doctores' object.doctor_encargado.id %}">{{ object.doctor_encargado }}</a></td></tr>
+<tr><td>CIUDAD DE POSIBLE CONTAGIO:</td><td>{{ object.ciudad_contagio }}</td></tr>
+<tr><td>PARIENTES:</td><td>{% for pariente in object.parientes.all %}<a href="{%url 'perfil' 'parientes' pariente.id %}">{{ pariente.nombre }}</a><br>{% endfor %}</td></tr>
+<tr><td>FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
+{% endblock  %}
+

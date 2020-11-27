@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Crear paciente</h2>
+ <form action="{% url 'crear_pacientes'%}" method="post" style="display: flex;flex-direction: column;width:35%">
+    {% csrf_token %}
+    {{ form }}
+    <h3>Personas relacionadas</h3>
+    {{ formParientes.management_form }}
+    {% for pariente in  formParientes %}
+    <h4>Persona {{forloop.counter}}:</h4>
+    {{pariente}}
+    <br>
+    {% endfor %}  
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

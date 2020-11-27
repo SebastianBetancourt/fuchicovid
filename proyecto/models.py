@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+# Modelo de datos
 
 class Persona(models.Model):
     CC = 'CC'
@@ -21,23 +24,23 @@ class Persona(models.Model):
     direccion = models.CharField(max_length=255)
     barrio = models.CharField(max_length=100)
     telefono = models.CharField(max_length=32)
+    def __str__(self):
+        return '{} {}'.format(self.apellido, self.nombre)
 
-class Funcionario(models.Model):
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
-    usuario = models.CharField(max_length=100)
-    clave = models.CharField(max_length=100)
 
-class Doctor(models.Model):
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+class Funcionario(Persona):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class Doctor(Persona):
     funcionario_registrador = models.ForeignKey(Funcionario, on_delete=models.CASCADE)
     creacion = models.DateTimeField(auto_now_add=True)
     universidad = models.CharField(max_length=100)
     eps = models.CharField(max_length=100)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
-class Paciente(models.Model):
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+class Paciente(Persona):
     geolocalizacion = models.CharField(max_length=100)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor_encargado = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     creacion = models.DateTimeField(auto_now_add=True)
     ciudad_contagio = models.CharField(max_length=100)
     parientes = models.ManyToManyField(Persona, related_name='pariente')
@@ -57,3 +60,26 @@ class Reserva(models.Model):
     medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
     laboratorio = models.CharField(max_length=32)
     cantidad = models.PositiveIntegerField()
+
+
+
+# Trigger
+from django.db import connection
+print("models being executed")
+connection.cursor().execute("""
+CREATE OR REPLACE FUNCTION reabastecer_medicamento()
+RETURNS trigger AS '
+BEGIN
+  IF NEW.cantidad = 0 THEN
+    NEW.cantidad := 100;
+  END IF;
+  RETURN NEW;
+END' LANGUAGE 'plpgsql'""")
+
+connection.cursor().execute("DROP TRIGGER IF EXISTS medicamento_acabado ON proyecto_reserva")
+
+connection.cursor().execute("""
+CREATE TRIGGER medicamento_acabado 
+BEFORE UPDATE ON proyecto_reserva 
+FOR EACH ROW EXECUTE 
+PROCEDURE reabastecer_medicamento();""")
