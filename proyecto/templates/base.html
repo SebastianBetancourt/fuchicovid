@@ -1,7 +1,7 @@
 {% load static %}<!DOCTYPE html>
 <html>
 <head>
-  <title>Inicio - fuchi-covid</title>
+  <title>{{title|title}} - fuchi-covid</title>
   <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 </head>
 <body>
@@ -9,11 +9,15 @@
     <h1>fuchi-COVID</h1>
     {% if user.is_authenticated %}
       Sesión abierta de <strong>{{ user.username }}</strong> /
-      <a href="{% url 'home' %}">Inicio</a> /
+      <a href="{% url 'home' %}">Inicio</a> //
+      <a href="{% url 'ver' 'pacientes' %}">Pacientes</a> /
+      <a href="{% url 'ver' 'doctores' %}">Doctores</a> /
+      <a href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> //
       <a href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
       <a href="{% url 'index' %}">Inicio</a> /
-      <a href="{% url 'login' %}">Iniciar sesión</a>
+      <a href="{% url 'login' %}">Iniciar sesión</a> /
+      <a href="{% url 'signup' %}">Crear cuenta</a>
     {% endif %}
     <hr>
   </header>

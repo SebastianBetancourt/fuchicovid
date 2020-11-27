@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if object_list %}
+        <h2>{{ superpersonas|title }} registrados</h2>
+    {% endif %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h3><a href="{% url crear %}">Añadir...</a></h3>
+
+    <table>
+    <tr>
+        <th>APELLIDOS</th>
+        <th>NOMBRES</th>
+        <th>DOCUMENTO</th>
+    </tr>
+    {% for superpersona in object_list %}
+    <tr>
+             <td>{{ superpersona.apellido }}</td>
+             <td>{{ superpersona.nombre }}</td>
+             <td>{{ superpersona.tipo_doc }} {{ superpersona.doc }}</td>
+             <td><a href="{%url 'perfil' superpersonas superpersona.id %}">Perfil ...</a></td>
+        </tr>
+    {% empty %}
+        No hay {{superpersonas}} registrados
+    {% endfor %}
+    </table>
+
+    {% if page_obj.has_previous or page_obj.has_next %}
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"> Atrás </a> - 
+                {% endif %}
+                    Pág. {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                {% if page_obj.has_next %}
+                    - <a href="?page={{ page_obj.next_page_number }}">Sgte.</a>
+                {% endif %}
+    {% endif %}
+{% endblock  %}

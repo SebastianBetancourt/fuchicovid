@@ -1,0 +1,9 @@
+{% extends 'persona/perfil.html' %}
+
+{% block detalle %}
+<tr><td>UNIVERSIDAD:</td><td>{{ object.universidad }}</td></tr>
+<tr><td>EPS:</td><td>{{ object.eps }}</tr>
+<tr><td>USUARIO:</td><td>{{ object.usuario }}</tr>
+<tr><td>CREADO POR:</td><td><a href="{%url 'perfil' 'funcionarios' object.funcionario_registrador.id %}">{{ object.funcionario_registrador.usuario.username }}</a></td></tr>
+<tr><td>FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
+{% endblock  %}

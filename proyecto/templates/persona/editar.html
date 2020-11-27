@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Editar {{superpersona|slice:":-1"}}:</h3>
+<h2>{{nombre|upper}}</h2>
+ <form action="{% url 'editar' superpersona pk %}" method="post" style="display: flex;flex-direction: column;width:35%">
+    {% csrf_token %}
+    {{ form }}
+    {% if formParientes %}
+    <h4>Personas relacionadas</h4>
+    {{ formParientes.management_form }}
+    {% for pariente in formParientes %}
+    <h4>Persona {{forloop.counter}}:</h4>
+    {{pariente}}
+    <br>
+    {% endfor %}  
+    {% endif %}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

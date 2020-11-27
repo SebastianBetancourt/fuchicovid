@@ -1,0 +1,9 @@
+[{
+    "model": "proyecto.funcionario",
+    "pk": 1,
+    "fields": {
+      "persona_ptr_id": "1",
+      "usuario_id": "1"
+    }
+  }
+]
