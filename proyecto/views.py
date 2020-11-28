@@ -36,16 +36,19 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+from django.contrib.auth.decorators import login_required, permission_required
+
 @login_required
 def home(request):
     return render(request, 'home.html')
 
 from django.views.generic.list import ListView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
-class ver(ListView):
+class ver(PermissionRequiredMixin, ListView):
     template_name = 'persona/ver.html'
     paginate_by = 10
-    
+
     def setup(self, request, *args, **kwargs):
         if kwargs['superpersona'] == 'pacientes':
             self.model = models.Paciente
@@ -56,6 +59,18 @@ class ver(ListView):
         elif  kwargs['superpersona'] == 'parientes':
             self.model = models.Persona
         super().setup(request, *args, **kwargs)
+
+    def get_permission_required(self):
+        print(self.request.user.get_all_permissions())
+        if self.kwargs['superpersona'] == 'pacientes':
+            print('proyecto.view_paciente needed')
+            return ['proyecto.view_paciente']
+        elif self.kwargs['superpersona'] == 'doctores':
+            return ['proyecto.view_doctor']
+        elif self.kwargs['superpersona'] == 'funcionarios':
+            return ['proyecto.view_funcionario']
+        elif self.kwargs['superpersona'] == 'parientes':
+            return []
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -69,6 +84,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 
+@permission_required('proyecto.add_paciente')
 def crear_paciente(request):
     pacienteForm = modelform_factory(models.Paciente, exclude=('geolocalizacion','parientes'))
     parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, fields=('nombre','apellido','email','tipo_doc','doc','direccion','barrio','telefono'))
@@ -87,6 +103,9 @@ def crear_paciente(request):
 
     return render(request, 'paciente/crear.html', {'form': paciente, 'formParientes' : parientes})
 
+from django.contrib.auth.models import Group
+
+@permission_required('proyecto.add_doctor')
 def crear_doctor(request):
     doctorForm = modelform_factory(models.Doctor, exclude=('funcionario_registrador','creacion'))
     if request.method == 'POST':
@@ -94,6 +113,7 @@ def crear_doctor(request):
         if doctor.is_valid():
             d = doctor.save(commit=False)
             d.funcionario_registrador = models.Funcionario.objects.get(usuario=request.user.id)
+            Group.objects.get(name='doctores').user_set.add(d.usuario)
             d.save()
             messages.success(request, 'Doctor '+d.nombre+' añadido exitosamente.')
             return HttpResponseRedirect(reverse('ver', args=('doctores',)))
@@ -102,12 +122,14 @@ def crear_doctor(request):
 
     return render(request, 'doctor/crear.html', {'form': doctor})
 
+@permission_required('proyecto.add_funcionario')
 def crear_funcionario(request):
     funcionarioForm = modelform_factory(models.Funcionario, exclude=[])
     if request.method == 'POST':
         funcionario = funcionarioForm(request.POST)
         if funcionario.is_valid():
             f = funcionario.save()
+            Group.objects.get(name='funcionarios').user_set.add(f.usuario)
             messages.success(request, 'Funcionario '+f.nombre+' añadido exitosamente.')
             return HttpResponseRedirect(reverse('ver', args=('funcionarios',)))
     else:
@@ -117,7 +139,7 @@ def crear_funcionario(request):
 
 from django.views.generic.detail import DetailView 
 
-class perfil(DetailView): 
+class perfil(PermissionRequiredMixin, DetailView): 
     def setup(self, request, *args, **kwargs):
         if kwargs['superpersona'] == 'pacientes':
             self.model = models.Paciente
@@ -140,6 +162,17 @@ class perfil(DetailView):
             return ['persona/perfil.html']
         return super().get_template_names()
 
+    def get_permission_required(self):
+        if self.kwargs['superpersona'] == 'pacientes':
+            return ['proyecto.view_paciente']
+        elif self.kwargs['superpersona'] == 'doctores':
+            return ['proyecto.view_doctor']
+        elif self.kwargs['superpersona'] == 'funcionarios':
+            return ['proyecto.view_funcionario']
+        elif self.kwargs['superpersona'] == 'parientes':
+            return []
+        return super().get_permission_required()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['superpersonas'] = self.kwargs['superpersona']
@@ -147,6 +180,7 @@ class perfil(DetailView):
         context['title'] = self.kwargs['superpersona']
         return context
 
+@login_required
 def editar(request, superpersona, pk):
     is_paciente = False
     parientes = []
@@ -189,5 +223,20 @@ def editar(request, superpersona, pk):
     
 from django.http import Http404
 
-def borrar(request):
-    raise Http404("TODO")
+@login_required
+def borrar(request, superpersona, pk):
+    if superpersona == 'pacientes':
+            model = models.Paciente
+    elif superpersona == 'doctores':
+            model = models.Doctor
+    elif  superpersona == 'funcionarios':
+            model = models.Funcionario
+    elif  superpersona == 'parientes':
+            model = models.Persona
+    instancia = model.objects.get(id=pk)
+    nombre = instancia.nombre
+    deleted = instancia.delete()
+    if deleted[0] > 0:
+        messages.success(request, superpersona[:-1]+" "+nombre+" eliminado (también se borraron "+str(deleted[0]-1)+" registros relacionados).")
+        return HttpResponseRedirect(reverse('ver', args=(superpersona,)))
+    

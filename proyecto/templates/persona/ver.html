@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
+{% load extras %}
 
 {% block content %}
-    {% if object_list %}
-        <h2>{{ superpersonas|title }} registrados</h2>
-    {% endif %}
-    {% if messages %}
+{% if messages %}
     <ul class="messages">
         {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
     </ul>
     {% endif %}
-    <h3><a href="{% url crear %}">Añadir...</a></h3>
+    {% if object_list %}
+        <h2>{{ superpersonas|title }} registrados</h2>
+    {% endif %}
+    {% if user|is_funcionario %}<h3><a href="{% url crear %}">Añadir...</a></h3>{% endif %}
 
     <table>
     <tr>
@@ -24,7 +25,7 @@
              <td>{{ superpersona.apellido }}</td>
              <td>{{ superpersona.nombre }}</td>
              <td>{{ superpersona.tipo_doc }} {{ superpersona.doc }}</td>
-             <td><a href="{%url 'perfil' superpersonas superpersona.id %}">Perfil ...</a></td>
+             <td><a href="{%url 'perfil' superpersonas superpersona.id %}">Ver perfil</a></td>
         </tr>
     {% empty %}
         No hay {{superpersonas}} registrados
