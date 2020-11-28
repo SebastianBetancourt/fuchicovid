@@ -1,4 +1,6 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}
+{% load extras %}
+<!DOCTYPE html>
 <html>
 <head>
   <title>{{title|title}} - fuchi-covid</title>
@@ -8,11 +10,17 @@
   <header>
     <h1>fuchi-COVID</h1>
     {% if user.is_authenticated %}
-      Sesión abierta de <strong>{{ user.username }}</strong> /
-      <a href="{% url 'home' %}">Inicio</a> //
-      <a href="{% url 'ver' 'pacientes' %}">Pacientes</a> /
-      <a href="{% url 'ver' 'doctores' %}">Doctores</a> /
-      <a href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> //
+      Sesión abierta de <strong>{{ user.username }} 
+      {% if user|is_funcionario %} (funcionario)
+      {% elif user|is_doctor %}(doctor)
+      {% else %}(invitado){% endif %}
+      </strong>
+      //
+      <a href="{% url 'index' %}">Inicio</a> /
+      {% if user|is_funcionario or user|is_doctor %} <a href="{% url 'ver' 'pacientes' %}">Pacientes</a> /{% endif %}
+      {% if user|is_funcionario %}<a href="{% url 'ver' 'doctores' %}">Doctores</a> /
+      <a href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %}//
+      <a href="{% url 'home' %}">Mi Perfil</a>  /
       <a href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
       <a href="{% url 'index' %}">Inicio</a> /

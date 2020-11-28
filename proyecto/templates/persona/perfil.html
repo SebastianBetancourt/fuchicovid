@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+{% load extras %}
 
 {% block content %}
 <h4>{{ title_singular|title }}:</h4>
 <h2>{{object.apellido|upper}} {{object.nombre|upper}}</h2>
-<a href={%url 'editar' superpersonas object.id%}>Editar</a> - <a href={%url 'borrar' superpersonas object.id%}>Borrar</a>
+{% if user|is_funcionario %}<a href={%url 'editar' superpersonas object.id%}>Editar</a>
+ - <a href={%url 'borrar' superpersonas object.id%} onclick="return confirm('¿Desea eliminar permanentemente este {{title_singular}}?');">Borrar</a>{% endif %}
+<br>
 <br>
 <table>
 <tr><td>APELLIDOS: </td><td>{{ object.apellido }}</td></tr>
