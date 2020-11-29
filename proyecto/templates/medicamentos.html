@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load extras %}
+{% load static %}
+{% block content %}
+{{ reservas_objs|json_script:"reservas_objs" }}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+<h2>Reserva de medicamentos</h2>
+<table>
+<tr>
+<th>LABORATORIO</th>
+{% for medicamento in medicamentos %}
+<th>{{medicamento}}</th>
+{% endfor %}
+</tr>
+{% for fila in tabla %}
+<tr>
+{% for r in fila %}
+<td>{{r}}</td>
+{% endfor %}
+</tr>
+{%endfor%}
+</table>
+
+<h3>Ordernar medicamento:</h3>
+<form method='POST' action="{%url 'ordenar_medicamentos' %}">
+{% csrf_token %}
+<select id="medicamento" name="medicamento">
+<option disabled selected value> -- Medicamento -- </option>
+{% for medicamento in medicamentos %}
+ <option value="{{medicamento.id}}">{{medicamento.nombre}}</option> 
+{% endfor %}
+</select>
+<select id="laboratorio" name="laboratorio">
+<option disabled selected value> -- Laboratorio -- </option>
+{% for laboratorio in laboratorios %}
+ <option value="{{laboratorio}}">{{laboratorio}}</option> 
+{% endfor %}
+</select>
+<input type="number" id="cantidad" name="cantidad" min="0" max="-1">
+<input type="submit" value="Ordenar" onclick="return confirm('¿Ordenar el medicamento seleccionado?');">
+</form>
+<script src="{% static "medicamentos.js" %}"></script>   
+{% endblock %}

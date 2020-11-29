@@ -1,4 +1,5 @@
 {% extends 'persona/perfil.html' %}
+{% load extras %}
 
 {% block detalle %}
 <tr><td>DOCTOR ENCARGADO:</td><td><a href="{%url 'perfil' 'doctores' object.doctor_encargado.id %}">{{ object.doctor_encargado }}</a></td></tr>
@@ -7,3 +8,33 @@
 <tr><td>FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
 {% endblock  %}
 
+{% block visitas %}
+<h3>Visitas registradas:</h3>
+{% if user|is_doctor %}<a href="{% url 'crear_visita' object.id %}">Registrar visita ...</a>{% endif %}
+<table>
+    <tr>
+        <th>FECHA</th>
+        <th>DOCTOR</th>
+        <th>TEMP. (C°)</th>
+        <th>PESO (Kgs)</th>
+        <th>PRESION ARTERIAL (mmHg/mmHg)</th>
+        <th>MEDICAMENTO RECETADO</th>
+        <th>DOSIS</th>
+        <th>OBSERVACIONES</th>
+    </tr>
+    {% for visita in visitas %}
+    <tr>
+             <td>{{ visita.fecha }}</td>
+             <td><a href="{%url 'perfil' 'doctores' visita.doctor.id %}">{{visita.doctor.apellido}} {{visita.doctor.nombre}}</a></td>
+             <td>{{ visita.temperatura }}</td>
+             <td>{{ visita.peso }}</td>
+             <td>{{ visita.presion_arterial }}</td>
+             <td>{{ visita.medicamento.nombre }}</td>
+             <td>{{ visita.dosis }}</td>
+             <td>{{ visita.observaciones }}</td>
+        </tr>
+    {% empty %}
+        No hay visitas registradas
+    {% endfor %}
+    </table>
+{% endblock  %}

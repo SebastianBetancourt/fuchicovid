@@ -2,6 +2,13 @@
 {% load extras %}
 
 {% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 <h4>{{ title_singular|title }}:</h4>
 <h2>{{object.apellido|upper}} {{object.nombre|upper}}</h2>
 {% if user|is_funcionario %}<a href={%url 'editar' superpersonas object.id%}>Editar</a>
@@ -17,4 +24,6 @@
         {% block detalle %}
         {% endblock %}
 </table>
+{% block visitas %}
+{% endblock  %}
 {% endblock  %}

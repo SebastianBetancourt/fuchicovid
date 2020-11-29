@@ -19,4 +19,7 @@ urlpatterns = [
     path('perfil/<superpersona>/<pk>', views.perfil.as_view(), name='perfil'),
     path('editar/<superpersona>/<pk>', views.editar, name='editar'),
     path('borrar/<superpersona>/<pk>', views.borrar, name='borrar'),
+    path('registrar_visita/<pk>', views.crear_visita, name='crear_visita'),
+    path('medicamentos/', views.medicamentos, name='medicamentos'),
+    path('ordenar_medicamentos/', views.ordenar_medicamentos, name='ordenar_medicamentos'),
 ]

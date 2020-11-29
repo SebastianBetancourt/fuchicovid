@@ -45,16 +45,21 @@ class Paciente(Persona):
     ciudad_contagio = models.CharField(max_length=100)
     parientes = models.ManyToManyField(Persona, related_name='pariente')
 
+class Medicamento(models.Model):
+    nombre = models.CharField(max_length=32)
+    def __str__(self):
+        return '{}'.format(self.nombre)
+
 class Visita(models.Model):
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(auto_now_add=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     temperatura = models.DecimalField(max_digits=5, decimal_places=2)
     peso = models.IntegerField()
-    presion_arterial = models.IntegerField()
-
-class Medicamento(models.Model):
-    nombre = models.CharField(max_length=32)
+    presion_arterial = models.CharField(max_length=100)
+    medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
+    dosis = models.CharField(max_length=100)
+    observaciones = models.TextField()
 
 class Reserva(models.Model):
     medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
@@ -65,7 +70,6 @@ class Reserva(models.Model):
 
 # Trigger
 from django.db import connection
-print("models being executed")
 connection.cursor().execute("""
 CREATE OR REPLACE FUNCTION reabastecer_medicamento()
 RETURNS trigger AS '
