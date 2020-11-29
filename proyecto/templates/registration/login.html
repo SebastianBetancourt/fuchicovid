@@ -36,8 +36,15 @@
     <br>
     <br>
     <br>
-    <a href="{% url 'social:begin' 'github' %}">Iniciar sesión con GitHub</a><br>
-    <a href="{% url 'social:begin' 'facebook' %}">Iniciar sesión con Facebook</a>
+    <a href="{% url 'social:begin' 'github' %}">Iniciar sesión con GitHub &nbsp&nbsp&nbsp 
+      <img class="img-fluid rounded-circle" src="{% static 'img/github_logo.png' %}"
+      width="40" height="40" alt=""> </a><br>
+
+
+    <a href="{% url 'social:begin' 'facebook' %}">Iniciar sesión con Facebook &nbsp&nbsp&nbsp
+      <img class="img-fluid rounded-circle" src="{% static 'img/facebook_logo.png' %}"
+      width="40" height="40" alt=""> </a><br>
+    </a>
   </form>
 
   

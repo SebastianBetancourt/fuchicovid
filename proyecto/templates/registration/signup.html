@@ -28,8 +28,8 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Crear cuenta</button>
+    
   </form>
   <br>
-  <a href="{% url 'social:begin' 'github' %}">Iniciar sesión con GitHub</a><br>
-  <a href="{% url 'social:begin' 'facebook' %}">Iniciar sesión con Facebook</a>
+  
 {% endblock %}
