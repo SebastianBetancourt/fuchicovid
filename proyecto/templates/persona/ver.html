@@ -9,7 +9,9 @@
         {% endfor %}
     </ul>
     {% endif %}
-    {% if object_list %}
+    {%if user|is_doctor and superpersonas == 'pacientes'%}
+    <h2>{{ superpersonas|title }} a su cargo</h2>
+    {% elif object_list %}
         <h2>{{ superpersonas|title }} registrados</h2>
     {% endif %}
     {% if user|is_funcionario %}<h3><a href="{% url crear %}">Añadir...</a></h3>{% endif %}

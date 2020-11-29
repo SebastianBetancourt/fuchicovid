@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Registrar visita</h2>
+ <form action="{% url 'crear_visita' paciente.id%}" method="post" style="display: flex;flex-direction: column;width:35%">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Registrar">
+</form>
+{% endblock %}

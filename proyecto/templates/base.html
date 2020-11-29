@@ -15,12 +15,13 @@
       {% elif user|is_doctor %}(doctor)
       {% else %}(invitado){% endif %}
       </strong>
-      //
-      <a href="{% url 'index' %}">Inicio</a> /
-      {% if user|is_funcionario or user|is_doctor %} <a href="{% url 'ver' 'pacientes' %}">Pacientes</a> /{% endif %}
-      {% if user|is_funcionario %}<a href="{% url 'ver' 'doctores' %}">Doctores</a> /
-      <a href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %}//
-      <a href="{% url 'home' %}">Mi Perfil</a>  /
+      / /
+      <a href="{% url 'index' %}">Inicio</a> / 
+      {% if user|is_funcionario or user|is_doctor %}<a href="{% url 'ver' 'pacientes' %}"> Pacientes</a> / {% endif %}
+      {% if user|is_doctor %}<a href="{% url 'medicamentos' %}">Medicamentos</a> {% endif %} / 
+      {% if user|is_funcionario %}<a href="{% url 'ver' 'doctores' %}">Doctores</a> / 
+      <a href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %} / 
+      <a href="{% url 'home' %}">Mi Perfil</a> / 
       <a href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
       <a href="{% url 'index' %}">Inicio</a> /

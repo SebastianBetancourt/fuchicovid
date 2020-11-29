@@ -60,6 +60,12 @@ class ver(PermissionRequiredMixin, ListView):
             self.model = models.Persona
         super().setup(request, *args, **kwargs)
 
+    def get_queryset(self):
+        medico = models.Doctor.objects.filter(usuario=self.request.user.id).first()
+        if medico is not None:
+            return models.Paciente.objects.filter(doctor_encargado_id=medico.id)
+        return super().get_queryset()
+
     def get_permission_required(self):
         print(self.request.user.get_all_permissions())
         if self.kwargs['superpersona'] == 'pacientes':
@@ -178,6 +184,8 @@ class perfil(PermissionRequiredMixin, DetailView):
         context['superpersonas'] = self.kwargs['superpersona']
         context['title_singular'] = self.kwargs['superpersona'][0:-1]
         context['title'] = self.kwargs['superpersona']
+        if self.kwargs['superpersona'] == 'pacientes':
+            context['visitas'] = models.Visita.objects.filter(paciente=self.kwargs['pk'])
         return context
 
 @login_required
@@ -234,9 +242,65 @@ def borrar(request, superpersona, pk):
     elif  superpersona == 'parientes':
             model = models.Persona
     instancia = model.objects.get(id=pk)
+    if superpersona == 'doctores' or superpersona == 'funcionarios':
+             Group.objects.get(name=superpersona).user_set.remove(instancia.usuario)
     nombre = instancia.nombre
     deleted = instancia.delete()
     if deleted[0] > 0:
+        
         messages.success(request, superpersona[:-1]+" "+nombre+" eliminado (también se borraron "+str(deleted[0]-1)+" registros relacionados).")
         return HttpResponseRedirect(reverse('ver', args=(superpersona,)))
     
+@permission_required('proyecto.add_visita')
+def crear_visita(request, pk):
+    visitaForm = modelform_factory(models.Visita, exclude=('doctor','paciente','fecha'))
+    if request.method == 'POST':
+        visita = visitaForm(request.POST)
+        if visita.is_valid():
+            v = visita.save(commit=False)
+            v.doctor = models.Doctor.objects.get(usuario=request.user.id)
+            v.paciente =  models.Paciente.objects.get(id=pk)
+            v.save()
+            messages.success(request, 'Visita registrada exitosamente.')
+            return HttpResponseRedirect(reverse('perfil', args=('pacientes',v.paciente.id)))
+    else:
+        visita = visitaForm()
+
+    return render(request, 'visita/crear.html', {'form': visita, 'paciente' : models.Paciente.objects.get(id=pk)})
+
+@permission_required('proyecto.view_reserva')
+def medicamentos(request):
+    reservas = models.Reserva.objects.all()
+    medicamentos =  models.Medicamento.objects.all()
+    tabla = []
+    laboratorios = []
+    for r in reservas:
+        try:
+            filaLaboratorio = laboratorios.index(r.laboratorio)
+        except ValueError:
+            laboratorios.append(r.laboratorio)
+            tabla.append([r.laboratorio]+[0 for _ in medicamentos])
+            filaLaboratorio = len(tabla) - 1
+        try:
+            colMedicamento = ([m.nombre for m in medicamentos].index(r.medicamento.nombre))+1
+        except ValueError:
+            medicamentos.append(r.medicamento.nombre)
+            filaLaboratorio = len(medicamentos)
+        tabla[filaLaboratorio][colMedicamento] = r.cantidad
+    return render(request, 'medicamentos.html', {'reservas_objs': list(reservas.values()), 'tabla' : tabla, 'medicamentos' : medicamentos, 'laboratorios' : laboratorios })
+
+@permission_required('proyecto.change_reserva')
+def ordenar_medicamentos(request):
+    if request.method == 'POST':
+        print(request.POST)
+        r = request.POST
+        reserva = models.Reserva.objects.get(laboratorio = r.get('laboratorio'), medicamento = models.Medicamento.objects.get(id=r.get('medicamento')))
+        print(reserva)
+        cantidad_solicitada = int(r.get('cantidad'))
+        if reserva.cantidad < cantidad_solicitada:
+            messages.error(request, 'La cantidad solicitada es mayor a la disponible en existencias')
+        else:
+            reserva.cantidad = reserva.cantidad - cantidad_solicitada
+            reserva.save()
+            messages.success(request,"Se ordenaron {} unds. de {} del laboratorio {} exitosamente.".format(cantidad_solicitada, reserva.medicamento.nombre, reserva.laboratorio))
+        return HttpResponseRedirect(reverse('medicamentos'))
