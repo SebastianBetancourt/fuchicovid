@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django'
+    'django.contrib.gis',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,6 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -94,8 +94,11 @@ if 'DATABASE_URL' not in os.environ:
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+db_config = dj_database_url.parse(os.environ.get('DATABASE_URL'))
+db_config['ENGINE'] = 'django.contrib.gis.db.backends.postgis',
+
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    'default': db_config
 }
 
 # Social login
