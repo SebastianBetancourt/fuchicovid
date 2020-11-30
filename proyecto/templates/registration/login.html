@@ -1,64 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+<head>
+  <link rel="icon"  href="{% static 'img/network.ico' %}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>FuchiCovid</title>
+  {% block css %}
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css'%}">
+  {% endblock %}
+</head>
+
 {% block content %}
-  <style>
-    form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
-form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-  </style>
-  <h2>Iniciar sesión</h2>
+  
+
+<br>
+<br>
   <form method="post">
+    <h2>Iniciar sesión</h2>
+    <br>
+    <br>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Iniciar sesión</button>
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'social:begin' 'github' %}">Iniciar sesión con GitHub &nbsp&nbsp&nbsp 
+      <img class="img-fluid rounded-circle" src="{% static 'img/github_logo.png' %}"
+      width="40" height="40" alt=""> </a><br>
+
+
+    <a href="{% url 'social:begin' 'facebook' %}">Iniciar sesión con Facebook &nbsp&nbsp&nbsp
+      <img class="img-fluid rounded-circle" src="{% static 'img/facebook_logo.png' %}"
+      width="40" height="40" alt=""> </a><br>
+    </a>
   </form>
-  <a href="{% url 'social:begin' 'github' %}">Iniciar sesión con GitHub</a><br>
-  <a href="{% url 'social:begin' 'facebook' %}">Iniciar sesión con Facebook</a>
-  <br>
+
+  
 
 {% endblock %}
