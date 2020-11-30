@@ -7,6 +7,7 @@
 <tr><td>CIUDAD DE POSIBLE CONTAGIO:</td><td>{{ object.ciudad_contagio }}</td></tr>
 <tr><td>PARIENTES:</td><td>{% for pariente in object.parientes.all %}<a href="{%url 'perfil' 'parientes' pariente.id %}">{{ pariente.nombre }}</a><br>{% endfor %}</td></tr>
 <tr><td>FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
+<tr><td>GEOLOCALIZACIÓN:</td><td><div id="map" style="width: 500px; height: 500px;"></div></td></tr>
 {% endblock  %}
 
 {% block visitas %}
@@ -38,4 +39,28 @@
         No hay visitas registradas
     {% endfor %}
     </table>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+    <script>
+        let map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+        new ol.layer.Vector({
+     source: new ol.source.Vector({
+         features: [
+             new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat({{ object.lng_lat }}))
+             })
+         ]
+        })})],
+        view: new ol.View({
+          center: ol.proj.fromLonLat({{ object.lng_lat }}),
+          zoom: 12
+        })
+      });
+
+    </script>
 {% endblock  %}

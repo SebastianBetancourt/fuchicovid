@@ -87,10 +87,17 @@ from django.forms import modelformset_factory, modelform_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.gis import forms
 
 @permission_required('proyecto.add_paciente')
 def crear_paciente(request):
-    pacienteForm = modelform_factory(models.Paciente, exclude=('geolocalizacion','parientes'))
+    pacienteForm = modelform_factory(models.Paciente, 
+        exclude=('parientes',), 
+        widgets={"geolocalizacion": forms.OSMWidget(attrs={'map_width': 500, 
+                                                            'map_height': 500,
+                                                            'default_lat': 3.42158,
+                                                            'default_lon': -76.5205,
+                                                            'default_zoom': 12})})
     parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, exclude=())
     if request.method == 'POST':
         paciente = pacienteForm(request.POST)
@@ -193,7 +200,7 @@ def editar(request, superpersona, pk):
     if superpersona == 'pacientes':
             is_paciente = True
             model = models.Paciente
-            excluir = ['geolocalizacion','parientes']
+            excluir = ['parientes']
     elif superpersona == 'doctores':
             model = models.Doctor
             excluir = ['funcionario_registrador','creacion']
@@ -206,6 +213,11 @@ def editar(request, superpersona, pk):
     instance = model.objects.get(id=pk)
     form = modelform_factory(model, exclude=excluir)
     if is_paciente:
+        form = modelform_factory(model, exclude=excluir, widgets={"geolocalizacion": forms.OSMWidget(attrs={'map_width': 500, 
+                                                            'map_height': 500,
+                                                            'default_lat': 3.42158,
+                                                            'default_lon': -76.5205,
+                                                            'default_zoom': 12})})
         parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=3, exclude=())
     if request.method == 'POST':
         superpersonaForm = form(request.POST, instance=instance)
@@ -318,6 +330,7 @@ def informe(request):
                     'promedio_por_barrio': models.Paciente.objects.values("barrio").annotate(pacientes=Count("id")).aggregate(Avg('pacientes')).get('pacientes__avg'),
                     'promedio_edad':  models.Paciente.objects.aggregate(Avg('edad')).get('edad__avg'),
                     'pacientes_barrio' :  {'pacientes' : [p.get('pacientes') for p in pacientes_barrio],'barrios' : [p.get('barrio') for p in pacientes_barrio]},
-                    'edad_pacientes' : {'pacientes' : [e.get('pacientes') for e in edad_pacientes], 'edad' : [e.get('edad') for e in edad_pacientes]}
+                    'edad_pacientes' : {'pacientes' : [e.get('pacientes') for e in edad_pacientes], 'edad' : [e.get('edad') for e in edad_pacientes]},
+                    'puntos' : [p.lng_lat for p in models.Paciente.objects.filter(geolocalizacion__isnull=False)]
                     }
     return render(request, 'informe.html', estadisticas)

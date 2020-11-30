@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block css %}{{ form.media }}{% endblock %}
 {% block content %}
 <h3>Editar {{superpersona|slice:":-1"}}:</h3>
 <h2>{{nombre|upper}}</h2>
