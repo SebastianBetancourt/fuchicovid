@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'fuchicovid.wsgi.application'
 # variables de ambiente
 
 if 'IS_HEROKU' in os.environ:
-    GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+    LD_LIBRARY_PATH = os.getenv('LD_LIBRARY_PATH')
     GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
 if 'DATABASE_URL' not in os.environ:
