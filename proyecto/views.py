@@ -292,10 +292,8 @@ def medicamentos(request):
 @permission_required('proyecto.change_reserva')
 def ordenar_medicamentos(request):
     if request.method == 'POST':
-        print(request.POST)
         r = request.POST
         reserva = models.Reserva.objects.get(laboratorio = r.get('laboratorio'), medicamento = models.Medicamento.objects.get(id=r.get('medicamento')))
-        print(reserva)
         cantidad_solicitada = int(r.get('cantidad'))
         if reserva.cantidad < cantidad_solicitada:
             messages.error(request, 'La cantidad solicitada es mayor a la disponible en existencias')
@@ -304,3 +302,24 @@ def ordenar_medicamentos(request):
             reserva.save()
             messages.success(request,"Se ordenaron {} unds. de {} del laboratorio {} exitosamente.".format(cantidad_solicitada, reserva.medicamento.nombre, reserva.laboratorio))
         return HttpResponseRedirect(reverse('medicamentos'))
+
+from django.db.models import Avg, Count
+import json
+
+@permission_required('proyecto.view_paciente')
+def informe(request):
+    if request.method == 'POST':
+        r = request.POST
+        total_visitas_rango = models.Visita.objects.filter(fecha__gte=r.get('desde'), fecha__lte=r.get('hasta')).count()
+        return HttpResponse(json.dumps({'total': total_visitas_rango}), content_type="application/json")
+    pacientes_barrio =  models.Paciente.objects.values("barrio").annotate(pacientes=Count("id"))
+    edad_pacientes = models.Paciente.objects.all().values('edad').annotate(pacientes=Count("id"))
+    estadisticas = {'total_pacientes': models.Paciente.objects.all().count(), 
+                    'total_doctores': models.Doctor.objects.all().count(), 
+                    'total_funcinarios': models.Funcionario.objects.all().count(), 
+                    'promedio_por_barrio': models.Paciente.objects.values("barrio").annotate(pacientes=Count("id")).aggregate(Avg('pacientes')).get('pacientes__avg'),
+                    'promedio_edad':  models.Paciente.objects.aggregate(Avg('edad')).get('edad__avg'),
+                    'pacientes_barrio' :  {'pacientes' : [p.get('pacientes') for p in pacientes_barrio],'barrios' : [p.get('barrio') for p in pacientes_barrio]},
+                    'edad_pacientes' : {'pacientes' : [e.get('pacientes') for e in edad_pacientes], 'edad' : [e.get('edad') for e in edad_pacientes]}
+                    }
+    return render(request, 'informe.html', estadisticas)
