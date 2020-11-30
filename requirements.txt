@@ -4,4 +4,3 @@ django-heroku
 psycopg2
 dj_database_url
 social-auth-app-django
-libatlas-base-dev
