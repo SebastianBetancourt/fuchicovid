@@ -22,4 +22,5 @@ urlpatterns = [
     path('registrar_visita/<pk>', views.crear_visita, name='crear_visita'),
     path('medicamentos/', views.medicamentos, name='medicamentos'),
     path('ordenar_medicamentos/', views.ordenar_medicamentos, name='ordenar_medicamentos'),
+    path('informe/', views.informe, name='informe'),
 ]

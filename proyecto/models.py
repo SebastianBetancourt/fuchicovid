@@ -24,6 +24,7 @@ class Persona(models.Model):
     direccion = models.CharField(max_length=255)
     barrio = models.CharField(max_length=100)
     telefono = models.CharField(max_length=32)
+    edad = models.IntegerField()
     def __str__(self):
         return '{} {}'.format(self.apellido, self.nombre)
 
