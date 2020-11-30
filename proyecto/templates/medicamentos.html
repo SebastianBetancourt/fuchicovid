@@ -1,6 +1,27 @@
 {% extends 'base.html' %}
 {% load extras %}
 {% load static %}
+
+<head>
+    <link rel="icon"  href="{% static 'img/network.ico' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>FuchiCovid</title>
+    {% block css %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css'%}">
+    {% endblock %}
+  </head>
+
+
 {% block content %}
 {{ reservas_objs|json_script:"reservas_objs" }}
 {% if messages %}
@@ -10,8 +31,11 @@
         {% endfor %}
     </ul>
     {% endif %}
-<h2>Reserva de medicamentos</h2>
+
 <table>
+    <br>
+    <br>
+<h2 style="text-align: center;">Reserva de medicamentos</h2>
 <tr>
 <th>LABORATORIO</th>
 {% for medicamento in medicamentos %}
@@ -27,8 +51,9 @@
 {%endfor%}
 </table>
 
-<h3>Ordernar medicamento:</h3>
+
 <form method='POST' action="{%url 'ordenar_medicamentos' %}">
+<h3>Ordernar medicamento:</h3>
 {% csrf_token %}
 <select id="medicamento" name="medicamento">
 <option disabled selected value> -- Medicamento -- </option>
@@ -43,7 +68,7 @@
 {% endfor %}
 </select>
 <input type="number" id="cantidad" name="cantidad" min="0" max="-1">
-<input type="submit" value="Ordenar" onclick="return confirm('¿Ordenar el medicamento seleccionado?');">
+<button type="submit" onclick="return confirm('¿Ordenar el medicamento seleccionado?');">Ordenar</button>
 </form>
 <script src="{% static "medicamentos.js" %}"></script>   
 {% endblock %}

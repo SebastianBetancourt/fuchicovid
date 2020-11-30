@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 {% load extras %}
+{% load static %}
+
+<head>
+    <link rel="icon"  href="{% static 'img/network.ico' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>FuchiCovid</title>
+    {% block css %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css'%}">
+    {% endblock %}
+  </head>
+
 
 {% block content %}
 {% if messages %}
@@ -17,11 +38,14 @@
     {% if user|is_funcionario %}<h3><a href="{% url crear %}">Añadir...</a></h3>{% endif %}
 
     <table>
+    <thead>
     <tr>
         <th>APELLIDOS</th>
         <th>NOMBRES</th>
         <th>DOCUMENTO</th>
+        <th></th>
     </tr>
+    </thead>
     {% for superpersona in object_list %}
     <tr>
              <td>{{ superpersona.apellido }}</td>
