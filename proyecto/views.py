@@ -67,9 +67,7 @@ class ver(PermissionRequiredMixin, ListView):
         return super().get_queryset()
 
     def get_permission_required(self):
-        print(self.request.user.get_all_permissions())
         if self.kwargs['superpersona'] == 'pacientes':
-            print('proyecto.view_paciente needed')
             return ['proyecto.view_paciente']
         elif self.kwargs['superpersona'] == 'doctores':
             return ['proyecto.view_doctor']
@@ -93,7 +91,7 @@ from django.contrib import messages
 @permission_required('proyecto.add_paciente')
 def crear_paciente(request):
     pacienteForm = modelform_factory(models.Paciente, exclude=('geolocalizacion','parientes'))
-    parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, fields=('nombre','apellido','email','tipo_doc','doc','direccion','barrio','telefono'))
+    parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, exclude=())
     if request.method == 'POST':
         paciente = pacienteForm(request.POST)
         parientes = parientesFormset(request.POST)
@@ -208,7 +206,7 @@ def editar(request, superpersona, pk):
     instance = model.objects.get(id=pk)
     form = modelform_factory(model, exclude=excluir)
     if is_paciente:
-        parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=3, fields=('nombre','apellido','email','tipo_doc','doc','direccion','barrio','telefono'))
+        parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=3, exclude=())
     if request.method == 'POST':
         superpersonaForm = form(request.POST, instance=instance)
         if is_paciente:
