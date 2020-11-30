@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load extras %}
+{% load static %}
+{% block content %}
+<h2>Informe general</h2>
+<ul>
+  <li>Total de pacientes registrados: {{total_pacientes}}</li>
+  <li>Total de doctores registrados: {{total_doctores}}</li>
+  <li>Total de funcionarios registrados: {{total_funcinarios}}</li>
+  <li>Promedio de pacientes por barrio: {{promedio_por_barrio}}</li>
+  <li>Pacientes por barrio: <br> <canvas id="pacientes_barrio" width="400" height="400"></canvas></li>
+  <li>Promedio de edad de los pacientes: {{promedio_edad}}</li>
+  <li>Edades de los pacientes: <br> <canvas id="edad_pacientes" width="400" height="400"></canvas></li>
+  <li>Total de visitas realizadas: <br> 
+  <label>Desde <input type="text" id="desde"></label> <label> Hasta <input type="text" id="hasta"></label> <input type="submit" value="Consultar" onclick="consultar_visitas('{%url 'informe'%}','{{csrf_token}}')">
+  <br><span id='resultado_visitas'></span>
+  </li>
+
+</ul>
+
+{{ pacientes_barrio|json_script:"pacientes_barrio_json" }}
+{{ edad_pacientes|json_script:"edad_pacientes_json" }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="{% static "informes.js" %}"></script>
+{% endblock %}

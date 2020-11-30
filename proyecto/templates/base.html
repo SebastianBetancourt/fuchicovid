@@ -41,6 +41,7 @@
       {% if user|is_doctor %}<a href="{% url 'medicamentos' %}">Medicamentos</a> {% endif %} 
       {% if user|is_funcionario %}<a href="{% url 'ver' 'doctores' %}">Doctores</a>  
       <a class="navbar-brand" href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %} 
+      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'informe' %}"> Informe</a> / {% endif %}
       <a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a> 
       <a class="navbar-brand" href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
@@ -77,9 +78,6 @@
  
 
 
-
-
-  
   <main>
    {% block content %}
     {% endblock %}
