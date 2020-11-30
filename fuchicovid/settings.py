@@ -86,16 +86,24 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'fuchicovid.wsgi.application'
 
 # variables de ambiente
+
+if 'IS_HEROKU' in os.environ:
+    GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+    GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+
 if 'DATABASE_URL' not in os.environ:
     import environ
     env = environ.Env()
     environ.Env.read_env()
+    
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 db_config = dj_database_url.parse(os.environ.get('DATABASE_URL'))
 db_config['ENGINE'] = 'django.contrib.gis.db.backends.postgis',
+
+
 
 DATABASES = {
     'default': db_config
