@@ -9,18 +9,21 @@
         {% endfor %}
     </ul>
     {% endif %}
-<h4>{{ title_singular|title }}:</h4>
-<h2>{{object.apellido|upper}} {{object.nombre|upper}}</h2>
+    <br>
+    <br>
+<h4 style="text-align: center;">{{ title_singular|title }}:</h4>
+<h2 style="text-align: center;">{{object.apellido|upper}} {{object.nombre|upper}}</h2>
 {% if user|is_funcionario %}<a href={%url 'editar' superpersonas object.id%}>Editar</a>
  - <a href={%url 'borrar' superpersonas object.id%} onclick="return confirm('¿Desea eliminar permanentemente este {{title_singular}}?');">Borrar</a>{% endif %}
 <br>
 <br>
 <table>
-<tr><td>APELLIDOS: </td><td>{{ object.apellido }}</td></tr>
-<tr><td>NOMBRES: </td><td>{{ object.nombre }}</td></tr>
-<tr><td>DOCUMENTO: </td><td>{{ object.tipo_doc }} {{ object.doc }}</td></tr>
-<tr><td>DIRECCION: </td><td>{{ object.direccion }}</td></tr>
-<tr><td>TELEFONO: </td><td>{{ object.telefono }}</td></tr>
+
+<tr><td style="font-weight: bold;">APELLIDOS: </td><td>{{ object.apellido }}</td></tr>
+<tr><td style="font-weight: bold;">NOMBRES: </td><td>{{ object.nombre }}</td></tr>
+<tr><td style="font-weight: bold;">DOCUMENTO: </td><td>{{ object.tipo_doc }} {{ object.doc }}</td></tr>
+<tr><td style="font-weight: bold;">DIRECCION: </td><td>{{ object.direccion }}</td></tr>
+<tr><td style="font-weight: bold;">TELEFONO: </td><td>{{ object.telefono }}</td></tr>
         {% block detalle %}
         {% endblock %}
 </table>

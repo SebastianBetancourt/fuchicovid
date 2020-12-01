@@ -1,11 +1,15 @@
 const edad_pacientes = JSON.parse(document.getElementById('edad_pacientes_json').textContent);
 const pacientes_barrio = JSON.parse(document.getElementById('pacientes_barrio_json').textContent);
+
+
+
 new Chart(document.getElementById('pacientes_barrio'), {
     type: 'bar',
     data: {
         labels: pacientes_barrio.barrios,
         datasets: [{
             label: 'Pacientes por barrio',
+            backgroundColor: "rgb(244,46,74)",
             data: pacientes_barrio.pacientes,
         }]
     },
@@ -41,6 +45,7 @@ new Chart(document.getElementById('edad_pacientes'), {
     data: {
         labels: edad_pacientes.edad,
         datasets: [{
+            backgroundColor: "rgb(249,70,46)",
             data: edad_pacientes.pacientes,
         }]
     },

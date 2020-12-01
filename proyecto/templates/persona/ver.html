@@ -24,6 +24,7 @@
 
 {% block content %}
 {% if messages %}
+
     <ul class="messages">
         {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -31,13 +32,20 @@
     </ul>
     {% endif %}
     {%if user|is_doctor and superpersonas == 'pacientes'%}
-    <h2>{{ superpersonas|title }} a su cargo</h2>
-    {% elif object_list %}
-        <h2>{{ superpersonas|title }} registrados</h2>
-    {% endif %}
-    {% if user|is_funcionario %}<h3><a href="{% url crear %}">Añadir...</a></h3>{% endif %}
+    <br>
+    <br>
 
-    <table>
+    <h2 style="text-align: center; font-size: 50px; margin-top: 30px;">{{ superpersonas|title }} a su cargo</h2>
+    <br>
+    <br>
+    {% elif object_list %}
+        <h2 style="text-align: center; font-size: 50px; margin-top: 30px;">{{ superpersonas|title }} registrados</h2>
+    {% endif %}
+    <br>
+    <br>
+    {% if user|is_funcionario %}<h3 align="center"><a href="{% url crear %}">Añadir...</a></h3>{% endif %}
+    <br>
+    <table style="margin-bottom: 500px;">
     <thead>
     <tr>
         <th>APELLIDOS</th>
@@ -51,10 +59,12 @@
              <td>{{ superpersona.apellido }}</td>
              <td>{{ superpersona.nombre }}</td>
              <td>{{ superpersona.tipo_doc }} {{ superpersona.doc }}</td>
-             <td><a href="{%url 'perfil' superpersonas superpersona.id %}">Ver perfil</a></td>
+             <td><a style="font-weight: bold;" href="{%url 'perfil' superpersonas superpersona.id %}">Ver perfil</a></td>
         </tr>
     {% empty %}
-        No hay {{superpersonas}} registrados
+    <h2 style="text-align: center; font-size: 50px; margin-top: 30px;"> No hay {{ superpersonas|title }} registrados</h2>
+    <br>
+    <br>
     {% endfor %}
     </table>
 
