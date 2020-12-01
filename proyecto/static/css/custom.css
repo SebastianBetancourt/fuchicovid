@@ -1,5 +1,5 @@
 
-table {
+/* table {
   text-align: left;
   line-height: 40px;
   border-collapse: separate;
@@ -68,8 +68,35 @@ td:last-child {
 
 .delete:hover {
   color: #dc2a2a;
+}*/
+
+table {
+  position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    width: 80%;
+    font-size: 30px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-collapse:collapse;
+    color: rgb(49, 49, 49);
+   
 }
 
+th {
+  background: #ff6a00;
+  color: white
+}
+
+td {
+  height: 100px;
+}
+
+td {
+  border-bottom: 1px solid rgb(134, 134, 134);
+}
 
 form {
     position: relative;

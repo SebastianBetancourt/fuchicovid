@@ -20,7 +20,6 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{% static 'custom.css">
   {% endblock %}
 </head>
 <body>
@@ -48,19 +47,15 @@
       <!---->
 
       {% if user.is_authenticated %}
-      Sesión abierta de <strong>{{ user.username }} 
-      {% if user|is_funcionario %} (funcionario)
-      {% elif user|is_doctor %}(doctor)
-      {% else %}(invitado){% endif %}
-      </strong>
+    
       
       <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
       {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'ver' 'pacientes' %}"> Pacientes</a>  {% endif %}
       {% if user|is_doctor %}<a class="navbar-brand" href="{% url 'medicamentos' %}">Medicamentos</a> {% endif %} 
       {% if user|is_funcionario %}<a class="navbar-brand" href="{% url 'ver' 'doctores' %}">Doctores</a>  
       <a class="navbar-brand" href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %} 
-      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'informe' %}"> Informe</a> / {% endif %}
-      <a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a> 
+      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'informe' %}"> Informe</a>  {% endif %}
+      <!--<a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a>-->
       <a class="navbar-brand" href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
       <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
@@ -75,6 +70,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     
+      {% if user|is_funcionario %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Funcionario! </div>
+      {% elif user|is_doctor %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Doctor! </div>
+      {% else %}
+      {% endif %}
     </div>
   </nav>
 

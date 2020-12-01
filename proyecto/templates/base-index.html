@@ -20,7 +20,7 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{% static 'custom.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}">
   {% endblock %}
 </head>
 <body>
@@ -33,11 +33,23 @@
           overflow: hidden;
           padding-top: calc(7rem + 72px);
           padding-bottom: 7rem;}
+          h2 {
+            font-size: 40px;
+          }
         </style>
         <div class="masthead-content">
           <div class="container">
             <h1 class="masthead-heading mb-0">FuchiCovid</h1>
             <h3 class="masthead-subheading mb-0">Cuidandote desde casa</h3>
+            {% if user.is_authenticated %}
+            <h2>
+            {% if user|is_doctor %}
+            <h2> ¡Bienvenido, Doctor!  </h2>
+            {% endif %}
+            {% if user|is_funcionario %}  
+            <h2> ¡Bienvenido, Funcionario!  </h2>
+            {% endif %}
+            {% endif %}
           </div>
         </div>
         <div class="bg-circle-1 bg-circle"></div>
@@ -51,21 +63,29 @@
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
       
-      <!---->
+      {% if user.is_authenticated %}
 
+      
+
+   
+         <!--
+      {% comment %}
       {% if user.is_authenticated %}
       Sesión abierta de <strong>{{ user.username }} 
       {% if user|is_funcionario %} (funcionario)
       {% elif user|is_doctor %}(doctor)
       {% else %}(invitado){% endif %}
+      {% endcomment %}
       </strong>
-      
+      -->
+
       <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
       {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'ver' 'pacientes' %}"> Pacientes</a>  {% endif %}
       {% if user|is_doctor %}<a class="navbar-brand" href="{% url 'medicamentos' %}">Medicamentos</a> {% endif %} 
       {% if user|is_funcionario %}<a class="navbar-brand" href="{% url 'ver' 'doctores' %}">Doctores</a>  
       <a class="navbar-brand" href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %} 
-      <a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a> 
+      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'informe' %}"> Informe</a>  {% endif %}
+      <!--<a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a>-->
       <a class="navbar-brand" href="{% url 'logout' %}">Cerrar sesión</a>
     {% else %}
       <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
@@ -80,7 +100,20 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     
+
+       
+      {% if user|is_funcionario %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Funcionario! </div>
+      {% elif user|is_doctor %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Doctor! </div>
+      {% else %}
+      {% endif %}
     </div>
+    </div>
+
+    
+
+
   </nav>
 
 

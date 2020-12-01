@@ -27,7 +27,7 @@
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li  style="font-size: 20px;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} </li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -35,7 +35,9 @@
 <table>
     <br>
     <br>
-<h2 style="text-align: center;">Reserva de medicamentos</h2>
+<h2 style="text-align: center; font-size: 50px;">Reserva de medicamentos</h2>
+<br>
+<br>
 <tr>
 <th>LABORATORIO</th>
 {% for medicamento in medicamentos %}

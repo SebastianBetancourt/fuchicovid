@@ -1,18 +1,74 @@
 {% extends 'persona/perfil.html' %}
+{% load static %}
 {% load extras %}
 
+
+<head>
+    
+
+    <link rel="icon"  href="{% static 'img/network.ico' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+    <title>FuchiCovid</title>
+    {% block css %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    {% endblock %}
+  </head>
+
+
+
+
 {% block detalle %}
-<tr><td>EDAD:</td><td>{{ object.edad }}</td></tr>
-<tr><td>DOCTOR ENCARGADO:</td><td><a href="{%url 'perfil' 'doctores' object.doctor_encargado.id %}">{{ object.doctor_encargado }}</a></td></tr>
-<tr><td>CIUDAD DE POSIBLE CONTAGIO:</td><td>{{ object.ciudad_contagio }}</td></tr>
-<tr><td>PARIENTES:</td><td>{% for pariente in object.parientes.all %}<a href="{%url 'perfil' 'parientes' pariente.id %}">{{ pariente.nombre }}</a><br>{% endfor %}</td></tr>
-<tr><td>FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
+<style>
+    table {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    width: 60%;
+    font-size: 20px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-collapse:collapse;
+    color: rgb(49, 49, 49);
+    }
+    </style>
+
+<tr><td style="font-weight: bold;">EDAD:</td><td>{{ object.edad }}</td></tr>
+<tr><td style="font-weight: bold;">DOCTOR ENCARGADO:</td><td><a href="{%url 'perfil' 'doctores' object.doctor_encargado.id %}">{{ object.doctor_encargado }}</a></td></tr>
+<tr><td style="font-weight: bold;">CIUDAD DE POSIBLE CONTAGIO:</td><td>{{ object.ciudad_contagio }}</td></tr>
+<tr><td style="font-weight: bold;">PARIENTES:</td><td>{% for pariente in object.parientes.all %}<a href="{%url 'perfil' 'parientes' pariente.id %}">{{ pariente.nombre }}</a><br>{% endfor %}</td></tr>
+<tr><td style="font-weight: bold;">FECHA DE CREACIÓN:</td><td>{{ object.creacion }}</td></tr>
 {% endblock  %}
 
 {% block visitas %}
-<h3>Visitas registradas:</h3>
-{% if user|is_doctor %}<a href="{% url 'crear_visita' object.id %}">Registrar visita ...</a>{% endif %}
-<table>
+<h3 style="text-align: center;">Visitas registradas:</h3>
+{% if user|is_doctor %}
+<p align="center">
+<a href="{% url 'crear_visita' object.id %}">Registrar visita ...</a> 
+</p>{% endif %}
+
+
+<table style=" width: 90%; height: 20px;">
+   
+    <style>
+        td{height: 40px;}
+        th{height: 40px;}
+    </style>
+   
     <tr>
         <th>FECHA</th>
         <th>DOCTOR</th>
@@ -35,7 +91,7 @@
              <td>{{ visita.observaciones }}</td>
         </tr>
     {% empty %}
-        No hay visitas registradas
+       <p align="center">No hay visitas registradas</p> 
     {% endfor %}
     </table>
 {% endblock  %}

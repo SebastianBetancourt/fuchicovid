@@ -40,7 +40,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
 
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import PermissionRequiredMixin
