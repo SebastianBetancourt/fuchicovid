@@ -85,6 +85,10 @@ table {
    
 }
 
+navbar-brand{
+  font-size: 12px
+}
+
 th {
   background: #ff6a00;
   color: white
