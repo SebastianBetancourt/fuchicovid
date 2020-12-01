@@ -20,7 +20,10 @@
   </head>
 
 {% block content %}
-<h2>Crear paciente</h2>
+<br>
+<br>
+<br>
+<h2 style="text-align:center; font-size: 50px;">Crear paciente</h2>
  <form action="{% url 'crear_pacientes'%}" method="post" style="display: flex;flex-direction: column;width:35%">
     {% csrf_token %}
     {{ form }}
@@ -31,7 +34,7 @@
     {{pariente}}
     <br>
     {% endfor %}  
-    <input type="submit" value="Submit">
+    <button type="submit">Crear</button>
 
 </form>
 {% endblock %}
