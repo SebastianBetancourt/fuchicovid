@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.gis.db.models import PointField
 # Modelo de datos
 
 class Persona(models.Model):
@@ -40,11 +40,18 @@ class Doctor(Persona):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Paciente(Persona):
-    geolocalizacion = models.CharField(max_length=100)
     doctor_encargado = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     creacion = models.DateTimeField(auto_now_add=True)
     ciudad_contagio = models.CharField(max_length=100)
     parientes = models.ManyToManyField(Persona, related_name='pariente')
+    geolocalizacion = PointField(null=True)
+
+    @property
+    def lat_lng(self):
+        return list(getattr(self.geolocalizacion, 'coords', [])[::-1])
+    @property
+    def lng_lat(self):
+        return list(getattr(self.geolocalizacion, 'coords', []))
 
 class Medicamento(models.Model):
     nombre = models.CharField(max_length=32)

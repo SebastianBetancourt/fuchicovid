@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django'
+    'django.contrib.gis',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -79,23 +80,37 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
 WSGI_APPLICATION = 'fuchicovid.wsgi.application'
 
 # variables de ambiente
+
+if 'IS_HEROKU' in os.environ:
+    GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+    LD_LIBRARY_PATH = os.getenv('LD_LIBRARY_PATH')
+    GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+    print(GDAL_LIBRARY_PATH)
+    print(LD_LIBRARY_PATH)
+    print(GEOS_LIBRARY_PATH)
+
 if 'DATABASE_URL' not in os.environ:
     import environ
     env = environ.Env()
     environ.Env.read_env()
+    
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+db_config = dj_database_url.parse(os.environ.get('DATABASE_URL'))
+db_config['ENGINE'] = 'django.contrib.gis.db.backends.postgis',
+
+
+
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    'default': db_config
 }
 
 # Social login
@@ -157,3 +172,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
