@@ -98,7 +98,7 @@ def crear_paciente(request):
                                                             'default_lat': 3.42158,
                                                             'default_lon': -76.5205,
                                                             'default_zoom': 12})})
-    parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, exclude=())
+    parientesFormset = modelformset_factory(models.Persona, extra=3, max_num=100, exclude=(), min_num=2, validate_min=True)
     if request.method == 'POST':
         paciente = pacienteForm(request.POST)
         parientes = parientesFormset(request.POST)
