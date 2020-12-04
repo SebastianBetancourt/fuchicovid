@@ -21,8 +21,8 @@
   </head>
 
 {% block content %}
-<h3>Editar {{superpersona|slice:":-1"}}:</h3>
-<h2>{{nombre|upper}}</h2>
+<h3 style="text-align: center;">Editar {{superpersona}}:</h3>
+<h2 style="text-align: center;">{{nombre|upper}}</h2>
  <form action="{% url 'editar' superpersona pk %}" method="post" style="display: flex;flex-direction: column;width:35%">
     {% csrf_token %}
     {{ form }}
