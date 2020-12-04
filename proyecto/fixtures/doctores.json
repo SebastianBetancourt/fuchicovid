@@ -1,0 +1,13 @@
+[{
+    "model": "proyecto.doctor",
+    "pk": 1,
+    "fields": {
+      "persona_ptr_id": "2",
+      "creacion": "2013-01-16T08:16:59.844Z",
+      "universidad": "univalle",
+      "eps": "la eps",
+      "funcionario_registrador_id":"1",
+      "usuario_id":"1"
+    }
+  }
+]

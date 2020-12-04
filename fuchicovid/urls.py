@@ -21,6 +21,11 @@ from.import views
 
 
 urlpatterns = [
+<<<<<<< HEAD
     url(r'^$', views.index),
     url(r'^test', views.test),
+=======
+    path('admin/', admin.site.urls),
+    path('', include('proyecto.urls'))
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
 ]

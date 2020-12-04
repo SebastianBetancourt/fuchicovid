@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load extras %}
+
+{% block content %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <br>
+    <br>
+<h4 style="text-align: center;">{{ title_singular|title }}:</h4>
+<h2 style="text-align: center;">{{object.apellido|upper}} {{object.nombre|upper}}</h2>
+{% if user|is_funcionario %}<a href={%url 'editar' superpersonas object.id%}>Editar</a>
+ - <a href={%url 'borrar' superpersonas object.id%} onclick="return confirm('¿Desea eliminar permanentemente este {{title_singular}}?');">Borrar</a>{% endif %}
+<br>
+<br>
+<table>
+
+<tr><td style="font-weight: bold;">APELLIDOS: </td><td>{{ object.apellido }}</td></tr>
+<tr><td style="font-weight: bold;">NOMBRES: </td><td>{{ object.nombre }}</td></tr>
+<tr><td style="font-weight: bold;">DOCUMENTO: </td><td>{{ object.tipo_doc }} {{ object.doc }}</td></tr>
+<tr><td style="font-weight: bold;">DIRECCION: </td><td>{{ object.direccion }}</td></tr>
+<tr><td style="font-weight: bold;">TELEFONO: </td><td>{{ object.telefono }}</td></tr>
+        {% block detalle %}
+        {% endblock %}
+</table>
+{% block visitas %}
+{% endblock  %}
+{% endblock  %}

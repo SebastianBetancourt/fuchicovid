@@ -1,0 +1,101 @@
+{% load static %}
+{% load extras %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon"  href="{% static 'img/network.ico' %}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>FuchiCovid</title>
+  {% block css %}{% endblock %}
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+  
+<header class="masthead text-center text-white">
+  <style>
+    header.masthead {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(7rem + 72px);
+    padding-bottom: 1rem;}
+  </style>
+  <div class="bg-circle-1 bg-circle"></div>
+  <div class="bg-circle-2 bg-circle"></div>
+  <div class="bg-circle-3 bg-circle"></div>
+  <div class="bg-circle-4 bg-circle"></div>
+</header>
+
+
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+      
+      <!---->
+
+      {% if user.is_authenticated %}
+    
+      
+      <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
+      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'ver' 'pacientes' %}"> Pacientes</a>  {% endif %}
+      {% if user|is_doctor %}<a class="navbar-brand" href="{% url 'medicamentos' %}">Medicamentos</a> {% endif %} 
+      {% if user|is_funcionario %}<a class="navbar-brand" href="{% url 'ver' 'doctores' %}">Doctores</a>  
+      <a class="navbar-brand" href="{% url 'ver' 'funcionarios' %}">Funcionarios</a> {% endif %} 
+      {% if user|is_funcionario or user|is_doctor %}<a class="navbar-brand" href="{% url 'informe' %}"> Informe</a>  {% endif %}
+      <!--<a class="navbar-brand" href="{% url 'home' %}">Mi Perfil</a>-->
+      <a class="navbar-brand" href="{% url 'logout' %}">Cerrar sesión</a>
+    {% else %}
+      <a class="navbar-brand" href="{% url 'index' %}">Inicio</a> 
+      <a class="navbar-brand" href="{% url 'login' %}">Iniciar sesión</a> 
+      <a class="navbar-brand" href="{% url 'signup' %}">Crear cuenta</a>
+    {% endif %}
+ 
+
+      <!---->
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      {% if user|is_funcionario %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Funcionario! </div>
+      {% elif user|is_doctor %} 
+      <div class="navbar-brand"> ¡Hola {{ user.username }}, has accedido como Doctor! </div>
+      {% else %}
+      {% endif %}
+    </div>
+  </nav>
+
+
+
+
+ 
+
+
+  <main>
+   {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="py-5 bg-black">
+    <div class="container">
+      <p class="m-0 text-center text-white small">      Cesar Becerra, Joan Betancourt, Nicolas Lasso, Carlos Tovar - BD UV 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+
+</body>
+</html>

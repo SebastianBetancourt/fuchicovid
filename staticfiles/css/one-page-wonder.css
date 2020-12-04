@@ -18,7 +18,11 @@ h6 {
   font-weight: 800 !important;
 }
 
+<<<<<<< HEAD
 .btn-xl {
+=======
+btn-xl {
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
   text-transform: uppercase;
   padding: 1.5rem 3rem;
   font-size: 0.9rem;
@@ -26,6 +30,7 @@ h6 {
   letter-spacing: 0.1rem;
 }
 
+<<<<<<< HEAD
 .bg-black {
   background-color: #000 !important;
 }
@@ -35,12 +40,27 @@ h6 {
 }
 
 .navbar-custom {
+=======
+bg-black {
+  background-color: #000 !important;
+}
+
+rounded-pill {
+  border-radius: 5rem;
+}
+
+navbar-custom {
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
   padding-top: 1rem;
   padding-bottom: 1rem;
   background-color: rgba(0, 0, 0, 0.7);
 }
 
+<<<<<<< HEAD
 .navbar-custom .navbar-brand {
+=======
+navbar-custom .navbar-brand {
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
   text-transform: uppercase;
   font-size: 1rem;
   letter-spacing: 0.1rem;
@@ -57,8 +77,13 @@ h6 {
 header.masthead {
   position: relative;
   overflow: hidden;
+<<<<<<< HEAD
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
+=======
+  padding-top: calc(2rem + 72px);
+  padding-bottom: 1rem;
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
   background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);
   background-repeat: no-repeat;
   background-position: center center;
@@ -158,3 +183,8 @@ header.masthead .bg-circle-4 {
 .btn-secondary:focus {
   box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.5);
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 49f4bf551535e52910a27acabb9f3c27c39127b7
